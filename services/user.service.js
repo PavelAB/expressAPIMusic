@@ -5,7 +5,7 @@ const userService = {
     getAll:async(offset, limit)=>{
         const {rows,count} = await db.User.findAndCountAll({
             distinct:true,
-            offset:offset, // offset : offset -> offset
+            offset:offset,
             limit:limit
 
         });
@@ -41,7 +41,7 @@ const userService = {
         const nbDeletedRow=await db.User.destroy({
             where:{id}
         })
-        return nbDeletedRow === 1; //Est-ce que nb row suppremi =1? si oui delete reussi, si non delete rate
+        return nbDeletedRow === 1;
     }
 }
 

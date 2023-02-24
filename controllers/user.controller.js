@@ -10,9 +10,6 @@ const userController = {
      * @param {Response} res 
      */
     getAll: async (req, res) => {
-        //res.sendStatus(501);
-
-
         //SANS middleware
         const offset = req.query.offset || 0;
         const limit = req.query.limit || 50;

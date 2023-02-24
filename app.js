@@ -13,7 +13,7 @@ db.sequelize.authenticate()
 
 if(process.env.NODE_ENV==='development'){
     //db.sequelize.sync({force:true});
-    db.sequelize.sync({alter:{drop:false}})
+    //db.sequelize.sync({alter:{drop:false}})
 }
 
 //Middleware app-lvl
