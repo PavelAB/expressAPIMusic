@@ -5,8 +5,8 @@ const userService = {
     getAll:async(offset, limit)=>{
         const {rows,count} = await db.User.findAndCountAll({
             distinct:true,
-            offset:offset,
-            limit:limit
+            offset,
+            limit
 
         });
         
@@ -23,7 +23,6 @@ const userService = {
         return user? new UserDTO(user) : null;
 
     },
-
     create: async (userToAdd)=>{
         const user = await db.User.create(userToAdd);
         return user? new UserDTO(user):null;

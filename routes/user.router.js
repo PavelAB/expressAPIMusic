@@ -5,7 +5,7 @@ const pagination = require('../middlewares/pagination.middleware');
 
 userRouter.route('/')
     //Pour utiliser un middleware (router, middlewares, controller)
-    .get(userController.getAll)
+    .get(pagination(),userController.getAll)
     .post(userController.create)
 
 userRouter.route('/:id')

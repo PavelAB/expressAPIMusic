@@ -10,17 +10,16 @@ const userController = {
      * @param {Response} res 
      */
     getAll: async (req, res) => {
-        //SANS middleware
-        const offset = req.query.offset || 0;
-        const limit = req.query.limit || 50;
+        // //SANS middleware
+        // const offset = req.query.offset || 0;
+        // const limit = req.query.limit || 50;
 
-        // //AVEC middleware
-        // //On recupere les props offset et limit dans pagination ajoute a la requete par notre middleware
-        // const {offset,limit}=req.pagination;
-        
-
-        const { users, count } = await userService.getAll(offset,limit);
+        //AVEC middleware
+        //On recupere les props offset et limit dans pagination ajoute a la requete par notre middleware
+        const { offset, limit } = req.pagination;
+        const { users, count } = await userService.getAll(offset, limit);
         res.status(200).json(new SuccessArrayResponse(users, count));
+
     },
     /**
      * Get All

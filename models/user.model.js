@@ -18,12 +18,18 @@ module.exports = (sequelize) => {
         },
         email:{
             type:DataTypes.STRING(100),
-            allowNull:false
+            allowNull:false,
+            unique : "UK_User_Email"
         },
         password:{
             type:DataTypes.STRING(100),
             allowNull:false
         },
+        role:{
+            type:DataTypes.STRING,
+            allowNull:false,
+            defaultValue: "User"
+        }
     },{
         tableName:'User',
 
