@@ -1,11 +1,19 @@
 const { TrackDTO } = require('../dto/track.dto');
+const { Genre, Album, Artist } = require('../models');
 const db = require('../models')
 
 const trackService = {
-    getAll:async()=>{ 
+    getAll:async(offset,limit)=>{ 
 
         const {rows,count} = await db.Track.findAndCountAll({
             distinct:true,
+            offset,
+            limit,
+            //rajout genre
+            include : [Genre,Album,Artist]
+
+            //rajout abums
+            //rajout artists
 
         });
         
@@ -20,6 +28,7 @@ const trackService = {
     getById: async (id)=>{
         //const genre = await db.Genre.findOne({id})
         const track = await db.Track.findByPk(id,{
+            include : [Genre, Album,Artist]
 
         });
 
@@ -28,8 +37,56 @@ const trackService = {
     },
 
     create: async (trackToAdd)=>{
-        const track = await db.Track.create(trackToAdd);
-        return track? new TrackDTO(track):null;
+
+        //Ajout de la transaction 
+        const transaction = await db.sequelize.transaction()
+
+        let track;
+        try {
+            
+        
+
+                track = await db.Track.create(trackToAdd,{transaction});
+
+                //ajouter lien album
+                await track.addAlbum(trackToAdd.albums,{transaction})
+
+                //ajouter liens artists
+                //Pour chacun des artists recus
+                for ( const artist of trackToAdd.artists ){
+                    await track.addArtist(artist.id,{throught : {feat:artist.feat},transaction})
+                }
+                //await track.addArtist(trackToAdd.artists,{transaction})
+
+
+                // //
+                // //
+                // Album.addTrack()
+                // Artist.addTrack()
+                // //
+                // // ->
+                // Track.addAlbum
+                // // ->
+                // Track.addArtist
+
+                //Validationdes modification en DB
+                await transaction.commit();
+
+                //Recuperer en db la track avec artists et album
+                const addedTrack = await db.Track.findByPk(track.id,{
+                    include : [Genre, Album,Artist]
+                });
+
+
+
+                return addedTrack? new TrackDTO(addedTrack):null;
+        } 
+    catch (error) {
+        //Retour a l'etat initial
+        await transaction.rollback();
+        return null;
+            
+    }
     },
 
     update:async (id, trackToUpdate)=>{
