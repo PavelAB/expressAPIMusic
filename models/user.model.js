@@ -10,16 +10,32 @@ module.exports = (sequelize) => {
     const User = sequelize.define('User',{
         firstname:{
             type:DataTypes.STRING(100),
-            allowNull:false
+            allowNull:false,
+            validate:{
+                isAlpha:true,
+                notNull:true,
+                notEmpty:true
+
+            }
         },
         lastname:{
             type:DataTypes.STRING(100),
-            allowNull:false
+            allowNull:false,
+            validate:{
+                isAlpha:true,
+                notNull:true,
+                notEmpty:true
+            }
         },
         email:{
             type:DataTypes.STRING(100),
             allowNull:false,
-            unique : "UK_User_Email"
+            unique : "UK_User_Email",
+            validate:{
+                isEmail:true,
+                notNull:true,
+                notEmpty:true
+            }
         },
         password:{
             type:DataTypes.STRING(100),
@@ -28,7 +44,12 @@ module.exports = (sequelize) => {
         role:{
             type:DataTypes.STRING,
             allowNull:false,
-            defaultValue: "User"
+            defaultValue: "User",
+            validate:{
+                notNull:true,
+                notEmpty:true,
+                isIn:[['user','admin']]
+            }
         }
     },{
         tableName:'User',

@@ -13,7 +13,10 @@ module.exports = (sequelize) => {
         feat:{
             type:DataTypes.BOOLEAN,
             allowNull:false,
-            defaultValue:false
+            defaultValue:false,
+            validate:{
+                notNull:true
+            }
         }
     },{
         tableName:'MM_Artist_Track',

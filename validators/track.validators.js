@@ -14,4 +14,10 @@ const createTrackValidator = yup.object({
         })
     ).required().min(1)
 })
-module.exports = createTrackValidator
+
+const updateTrackValidator = yup.object({
+    title: yup.string().max(100).trim().required(),
+    duration : yup.number().integer().positive()
+})
+
+module.exports = {createTrackValidator, updateTrackValidator};
